@@ -1,26 +1,71 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="container">
+
+   
+
+    <!-- Step 3 you must use the imported component-->
+    <HeaderTop siteTitle= "Top 5 Most Streamed Songs"/>
+  <TrackBox :tracks="tracks"/>
+
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+// Step 1: import HeaderTop.vue
+import HeaderTop from './components/HeaderTop.vue'
+import TrackBox from './components/TrackBox.vue';
 
-export default {
+export default{
+
   name: 'App',
-  components: {
-    HelloWorld
-  }
+    // Step 2: Register the imported component 
+    components: {
+    HeaderTop,
+    TrackBox
+  },
+  data(){
+    return {
+      tracks: []
+    }
+  },
+  methods: {
+    async fetchTracks(){
+      const res = await fetch("https://watery-assorted-brass.glitch.me/api")
+      const data = await res.json()
+      // console.log(data["songs"])
+      return data["songs"]
+    }
+  },
+  async created(){
+      this.tracks = await this.fetchTracks()
+    }
+
 }
+  
 </script>
 
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
+  *{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body{
+    font-family: 'Ivar Text', 'Georgia', serif;
+    color: #323954;
+  }
+
+  .container{
+    max-width: 400px;
+    margin:  30px auto;
+    overflow: auto;
+    min-height: 300px;
+    border: 0.3em solid black;
+    padding: 30px;
+    border-radius: 5px;
+  }
+
 </style>
